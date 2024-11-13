@@ -1,4 +1,3 @@
-
 #include <cstdio>
 #include <cstring>
 #include <fstream>
@@ -8,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+
 #define EPS 1E-14
 
 double dabs(double _) { return _ > 0 ? _ : -_; }
@@ -354,7 +354,7 @@ void writeVector(std::vector<T>& from, std::ostream& to)
 // Провести серию тестов на число обусловленности
 void conditionNumberTestSeries(int tests)
 {
-    std::cout << "k & $x^k$ (float) & $x^* - x^k$ (float) & $x^k$ (double) & $x^* - x^k$ (double) & $x^k$ (mixed) & $x^* - x^k$ (mixed)\n";
+    std::cout << "k | x^k (float) | x^* - x^k (float) | x^k (double) | x^* - x^k (double) | x^k (mixed) | x^* - x^k (mixed)\n";
 
     for (int test = 0; test < tests; test++)
     {
@@ -391,46 +391,19 @@ void conditionNumberTestSeries(int tests)
 
         if (ok1 || ok2)
         {
-            std::cout << test << " & ";
             for (int i = 0; i < n; i++)
             {
-                std::cout<< std::fixed << std::setprecision(7) << f_x[i] << " | ";
+                std::cout<< std::setprecision(7) << f_x[i] << " | " << std::scientific << std::setprecision(2) << fabs((i + 1) - f_x[i]) << " | " << std::fixed << std::setprecision(14) << d_x[i] << " | " << std::scientific << std::setprecision(2) << dabs((i + 1) - d_x[i]) << " | "<< std::fixed << std::setprecision(7) << m_x[i] << " | "<< std::scientific << std::setprecision(2) << fabs((i + 1) - m_x[i]) << " | " << std::endl;
             }
-            std::cout << " & ";
-            for (int i = 0; i < n; i++)
-            {
-                std::cout << std::scientific << std::setprecision(2) << fabs((i + 1) - f_x[i]) << " | ";
-            }
-            std::cout << " & ";
-            for (int i = 0; i < n; i++)
-            {
-                std::cout << std::fixed << std::setprecision(14) << d_x[i] << " | ";
-            }
-            std::cout << " & ";
-            for (int i = 0; i < n; i++)
-            {
-                std::cout << std::scientific << std::setprecision(2) << dabs((i + 1) - d_x[i]) << " | ";
-            }
-            std::cout << " & ";
-            for (int i = 0; i < n; i++)
-            {
-                std::cout << std::fixed << std::setprecision(7) << m_x[i] << " | ";
-            }
-            std::cout << " & ";
-            for (int i = 0; i < n; i++)
-            {
-                std::cout << std::scientific << std::setprecision(2) << fabs((i + 1) - m_x[i]) << " | ";
-            }
-            std::cout << " \\\\ \\hline \n";
         }
 
         if (test != tests - 1)
         {
-            std::cout << "k & $x^k$ (float) & $x^* - x^k$ (float) & $x^k$ (double) & $x^* - x^k$ (double) & $x^k$ (mixed) & $x^* - x^k$ (mixed)\n";
+            std::cout << "k | x^k (float) | x^* - x^k (float) | x^k (double) | x^* - x^k (double) | x^k (mixed) | x^* - x^k (mixed)\n";
         }
     }
 
-    std::cout << "\\end{tabular}}\n";
+    std::cout << " |\n";
 }
 
 
@@ -495,7 +468,7 @@ bool solveGauss(std::vector<std::vector<T>> A, std::vector<T>& x, std::vector<T>
 // Сравнить Гаусса и разложение тестами на числом обусловленности
 void compareGaussLusq(int tests)
 {
-    std::cout << "k & $x^k$ (LU(sq)) & $x^* - x^k$ (LU(sq)) & $x^k$ (Gauss) & $x^* - x^k$ (Gauss)\n";
+    std::cout << "k | x^k (LU(sq)) | x^* - x^k (LU(sq)) | x^k (Gauss) | x^* - x^k (Gauss)\n";
 
     for (int test = 0; test < tests; test++)
     {
@@ -524,36 +497,36 @@ void compareGaussLusq(int tests)
 
         if (ok1 || ok2)
         {
-            std::cout << test << " & ";
+            std::cout << test << " | ";
             for (int i = 0; i < n; i++)
             {
                 std::cout<< std::fixed << std::setprecision(14) << d_x[i] << " | ";
             }
-            std::cout << " & ";
+            std::cout << " | ";
             for (int i = 0; i < n; i++)
             {
                 std::cout << std::scientific << std::setprecision(2) << dabs((i + 1) - d_x[i]) << " | ";
             }
-            std::cout << " & ";
+            std::cout << " | ";
             for (int i = 0; i < n; i++)
             {
                 std::cout << std::fixed << std::setprecision(14) << g_x[i] << " | ";
             }
-            std::cout << " & ";
+            std::cout << " | ";
             for (int i = 0; i < n; i++)
             {
                 std::cout << std::scientific << std::setprecision(2) << dabs((i + 1) - g_x[i]) << " | ";
             }
-            std::cout << " \\\\ \\hline \n";
+            std::cout << " |\n";
         }
 
         if (test != tests - 1)
         {
-            std::cout << "k & $x^k$ (LU(sq)) & $x^* - x^k$ (LU(sq)) & $x^k$ (Gauss) & $x^* - x^k$ (Gauss)\n";
+            std::cout << "k | x^k (LU(sq)) | x^* - x^k (LU(sq)) | x^k (Gauss) | x^* - x^k (Gauss)\n";
         }
     }
 
-    std::cout << "\\end{tabular}}\n";
+    std::cout << " |\n";
 }
 
 // Сгенерировать матрицу Гильберта
@@ -634,7 +607,7 @@ void generateHilbert(SkylineStorageMatrix<T>& dst, std::vector<T>& dstr, int n)
 // Провести серию тестов с матрицами Гильберта размерности от n1 до n2
 void hilbertTestSeries(int n1, int n2)
 {
-    std::cout << "k & $x^k$ (float) & $x^* - x^k$ (float) & $x^k$ (double) & $x^* - x^k$ (double)\n";
+    std::cout << "k | x^k (float) | x^* - x^k (float) | x^k (double) | x^* - x^k (double)\n";
 
     for (int n = n1; n <= n2; n++)
     {
@@ -650,35 +623,35 @@ void hilbertTestSeries(int n1, int n2)
         std::vector<double> d_x(n);
         bool ok2 = solve(d_x, d_a, d_b);
 
-        std::cout << n << " & ";
+        std::cout << n << " | ";
         for (int i = 0; i < n; i++)
         {
             std::cout << std::fixed << std::setprecision(7) << (ok1 ? f_x[i] : 0.0) << " | ";
         }
-        std::cout << " & ";
+        std::cout << " | ";
         for (int i = 0; i < n; i++)
         {
             std::cout << std::scientific << std::setprecision(2) << fabs(ok1 ? ((i + 1) - f_x[i]) : 0.0) << " | ";
         }
-        std::cout << " & ";
+        std::cout << " | ";
         for (int i = 0; i < n; i++)
         {
             std::cout << std::fixed << std::setprecision(14) << (ok2 ? d_x[i] : 0.0) << " | ";
         }
-        std::cout << " & ";
+        std::cout << " | ";
         for (int i = 0; i < n; i++)
         {
             std::cout << std::scientific << std::setprecision(2) << dabs(ok2 ? ((i + 1) - d_x[i]) : 0.0) << " | ";
         }
-        std::cout << " \\\\ \\hline \n";
+        std::cout << " |\n";
 
         if (n != n2)
         {
-            std::cout << "k & $x^k$ (float) & $x^* - x^k$ (float) & $x^k$ (double) & $x^* - x^k$ (double) \n";
+            std::cout << "k | x^k (float) | x^* - x^k (float) | x^k (double) | x^* - x^k (double) \n";
         }
     }
 
-    std::cout << "\\end{tabular}}\n";
+    std::cout << " |\n";
 }
 
 int main(int argc, char** argv)
