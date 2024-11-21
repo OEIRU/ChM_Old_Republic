@@ -7,11 +7,12 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <windows.h>
 #define EPS 1E-14
 
 double dabs(double _) { return _ > 0 ? _ : -_; }
 
-// РњР°С‚СЂРёС†Р° РІ РїСЂРѕС„РёР»СЊРЅРѕРј С„РѕСЂРјР°С‚Рµ
+// Матрица в профильном формате
 template<typename T>
 struct SkylineStorageMatrix{
     std::vector<int> ia;
@@ -20,7 +21,7 @@ struct SkylineStorageMatrix{
     std::vector<T> di;
 };
 
-// РЎС‡РёС‚Р°С‚СЊ РјР°С‚СЂРёС†Сѓ РІ РїСЂРѕС„РёР»СЊРЅРѕРј С„РѕСЂРјР°С‚Рµ
+// Считать матрицу в профильном формате
 template<typename T>
 void readSkyline(std::istream& from, SkylineStorageMatrix<T>& to) {
     int n;
@@ -40,7 +41,7 @@ void readSkyline(std::istream& from, SkylineStorageMatrix<T>& to) {
         from >> to.di[i];
 }
 
-// РЎРєРѕРЅРІРµСЂС‚РёСЂРѕРІР°С‚СЊ РјР°С‚СЂРёС†Сѓ РІ РїСЂРѕС„РёР»СЊРЅРѕРј С„РѕСЂРјР°С‚Рµ РІ РєРІР°РґСЂР°С‚РЅСѓСЋ
+// Сконвертировать матрицу в профильном формате в квадратную
 template<typename T>
 void skylineToSquare(SkylineStorageMatrix<T>& a, std::vector<std::vector<T>>& s) {
     #define elementsInLine(i) (a.ia[i + 1] - a.ia[i])
@@ -67,7 +68,7 @@ void skylineToSquare(SkylineStorageMatrix<T>& a, std::vector<std::vector<T>>& s)
     #undef elementsInLine
 }
 
- // РЎС‡РёС‚Р°С‚СЊ РІРµРєС‚РѕСЂ
+ // Считать вектор
 template<typename T>
 void readVector(std::istream& from, std::vector<T>& to) {
     int n;
@@ -77,7 +78,7 @@ void readVector(std::istream& from, std::vector<T>& to) {
         from >> to[i];
 }
 
-// Р Р°СЃРїРµС‡Р°С‚Р°С‚СЊ РєРІР°РґСЂР°С‚РЅСѓСЋ РјР°С‚СЂРёС†Сѓ
+// Распечатать квадратную матрицу
 template<typename T>
 void printMatrix(const std::vector<std::vector<T>> a) {
     for (unsigned int i = 0; i < a.size(); i++)
@@ -88,7 +89,7 @@ void printMatrix(const std::vector<std::vector<T>> a) {
     }
 }
 
-// Р Р°СЃРїРµС‡Р°С‚Р°С‚СЊ РјР°С‚СЂРёС†Сѓ РІ РїСЂРѕС„РёР»СЊРЅРѕРј С„РѕСЂРјР°С‚Рµ
+// Распечатать матрицу в профильном формате
 template<typename T>
 void printSkyline(SkylineStorageMatrix<T>& a) {
     std::vector<std::vector<T>> s;
@@ -96,29 +97,29 @@ void printSkyline(SkylineStorageMatrix<T>& a) {
     printMatrix(s);
 }
 
-// LU(sq)-СЂР°Р·Р»РѕР¶РµРЅРёРµ РјР°С‚СЂРёС†С‹ РІ РїСЂРѕС„РёР»СЊРЅРѕРј С„РѕСЂРјР°С‚Рµ
+// LU(sq)-разложение матрицы в профильном формате
 template<typename T, typename T2=T>
 bool LusqSkyline(SkylineStorageMatrix<T>& a){
     #define _sqrt(dst, val) { double underSqrt = (double)(val); if (underSqrt <= 0) return false; dst = (T)sqrt(underSqrt); }
-    #define elementsInLine(i) (a.ia[i + 1] - a.ia[i]) // РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ i'РѕР№ СЃС‚СЂРѕРєРµ/СЃС‚РѕР»Р±С†Рµ
-    // РџРµСЂРІР°СЏ СЃС‚СЂРѕРєР° РјР°С‚СЂРёС†С‹
+    #define elementsInLine(i) (a.ia[i + 1] - a.ia[i]) // Количество элементов в i'ой строке/столбце
+    // Первая строка матрицы
     _sqrt(a.di[0], a.di[0]); // d_1 = sqrt(a_11);
     for (unsigned int i = 1; i < a.di.size(); i++) {
         if (elementsInLine(i) == i)
             a.au[a.ia[i]] = a.au[a.ia[i]] / a.di[0]; // U_1i = a_1i/q1
     }
 
-    // РћР±С…РѕРґ РїРѕ СЃС‚СЂРѕРєР°Рј РјР°С‚СЂРёС†С‹
+    // Обход по строкам матрицы
     for (unsigned int i = 1; i < a.di.size(); i++){
         if (a.al.size()){
-            unsigned int alStartIndex = a.ia[i]; // РРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ РЅРµРЅСѓР»РµРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° i'РѕР№ СЃС‚СЂРѕРєРё РІ РјР°СЃСЃРёРІРµ al
-            unsigned int alEndIndex = a.ia[i] + elementsInLine(i); // Р”Рѕ СЃСЋРґР° РёРґС‚Рё РІ С†РёРєР»Рµ
+            unsigned int alStartIndex = a.ia[i]; // Индекс первого ненулевого элемента i'ой строки в массиве al
+            unsigned int alEndIndex = a.ia[i] + elementsInLine(i); // До сюда идти в цикле
             unsigned int j = i - elementsInLine(i);
-            // Р”Рѕ РїРµСЂРІРѕРіРѕ РЅРµРЅСѓР»РµРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РЅРµ Р±С‹Р»Рѕ РЅРµРЅСѓР»РµРІС‹С… СЌР»РµРјРµРЅС‚РѕРІ
+            // До первого ненулевого элемента не было ненулевых элементов
             a.al[alStartIndex] = a.al[alStartIndex] / a.di[j];
             alStartIndex++;
             j++;
-            // РћСЃРЅРѕРІРЅРѕР№ С†РёРєР»
+            // Основной цикл
             for (unsigned int alIndex = alStartIndex; alIndex < alEndIndex; alIndex++, j++){
                 T sum = (T)0;
                 unsigned int elementsInLineI = elementsInLine(i);
@@ -164,7 +165,7 @@ bool LusqSkyline(SkylineStorageMatrix<T>& a){
     return true;
 }
 
-// Р РµС€РёС‚СЊ СѓСЂР°РІРЅРµРЅРёРµ Ly=b
+// Решить уравнение Ly=b
 template<typename T, typename T2=T>
 bool findY(std::vector<T>& y, SkylineStorageMatrix<T>& a, std::vector<T>& b){
     #define _div(dst, a, b) { if (((b) > (T)0 ? (b) : -(b)) < (T)EPS) return false; dst = (a) / (b); }
@@ -181,7 +182,7 @@ bool findY(std::vector<T>& y, SkylineStorageMatrix<T>& a, std::vector<T>& b){
     return true;
 }
 
-// Р РµС€РёС‚СЊ СѓСЂР°РІРЅРµРЅРёРµ Ux=y
+// Решить уравнение Ux=y
 template<typename T, typename T2=T>
 bool findX(std::vector<T>& x, SkylineStorageMatrix<T>& a, std::vector<T>& y){
     #define _div(dst, a, b) { if (((b) > (T)0 ? (b) : -(b)) < (T)EPS) return false; dst = (a) / (b); }
@@ -200,7 +201,7 @@ bool findX(std::vector<T>& x, SkylineStorageMatrix<T>& a, std::vector<T>& y){
     return true;
 }
 
-// Р РµС€РёС‚СЊ СѓСЂР°РІРЅРµРЅРёРµ Ax=B
+// Решить уравнение Ax=B
 template<typename T, typename T2=T>
 bool solve(std::vector<T>& x, SkylineStorageMatrix<T>& a, std::vector<T>& b){
     std::vector<T> y(b.size());
@@ -215,7 +216,7 @@ bool solve(std::vector<T>& x, SkylineStorageMatrix<T>& a, std::vector<T>& b){
     return true;
 }
 
-// Р—Р°РїРёСЃР°С‚СЊ РјР°С‚СЂРёС†Сѓ РІ РїСЂРѕС„РёР»СЊРЅРѕРј С„РѕСЂРјР°С‚Рµ
+// Записать матрицу в профильном формате
 template<typename T>
 void writeSkyline(SkylineStorageMatrix<T>& from, std::ostream& to){
     to << from.di.size() << std::endl;
@@ -233,7 +234,7 @@ void writeSkyline(SkylineStorageMatrix<T>& from, std::ostream& to){
     to << std::endl;
 }
 
-// Р—Р°РїРёСЃР°С‚СЊ РІРµРєС‚РѕСЂ
+// Записать вектор
 template<typename T>
 void writeVector(std::vector<T>& from, std::ostream& to){
     to << from.size() << std::endl;
@@ -242,12 +243,12 @@ void writeVector(std::vector<T>& from, std::ostream& to){
     to << std::endl;
 }
 
-// РџСЂРѕРІРµСЃС‚Рё СЃРµСЂРёСЋ С‚РµСЃС‚РѕРІ РЅР° С‡РёСЃР»Рѕ РѕР±СѓСЃР»РѕРІР»РµРЅРЅРѕСЃС‚Рё
+// Провести серию тестов на число обусловленности
 void conditionNumberTestSeries(int tests){
     int counter = 1;
     std::ofstream outFile("condition_method.txt");
     if (!outFile.is_open()) {
-        std::cerr << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё." << std::endl;
+        std::cerr << "Не удалось открыть файл для записи." << std::endl;
         return;
     }
     outFile << std::left 
@@ -263,7 +264,7 @@ void conditionNumberTestSeries(int tests){
     for (int test = 0; test < tests; test++)
     {
         //float
-        std::fstream f_ifile("test6.txt");
+        std::fstream f_ifile("test1.txt");
         struct SkylineStorageMatrix<float> f_a;
         readSkyline(f_ifile, f_a);
         int n = f_a.di.size();
@@ -274,7 +275,7 @@ void conditionNumberTestSeries(int tests){
         std::vector<float> f_x(n);
         bool ok1 = solve(f_x, f_a, f_b);
         //double
-        std::fstream d_ifile("test6.txt");
+        std::fstream d_ifile("test1.txt");
         struct SkylineStorageMatrix<double> d_a;
         readSkyline(d_ifile, d_a);
         std::vector<double> d_b;
@@ -284,7 +285,7 @@ void conditionNumberTestSeries(int tests){
         std::vector<double> d_x(n);
         bool ok2 = solve(d_x, d_a, d_b);
         //mixed
-        std::fstream m_ifile("test6.txt");
+        std::fstream m_ifile("test1.txt");
         struct SkylineStorageMatrix<float> m_a;
         readSkyline(m_ifile, m_a);
         std::vector<float> m_b;
@@ -313,26 +314,26 @@ void conditionNumberTestSeries(int tests){
 }
 
 
-// Р РµС€РёС‚СЊ СЃРёСЃС‚РµРјСѓ Ax=B СЃ РїР»РѕС‚РЅРѕР№ РјР°С‚СЂРёС†РµР№ РјРµС‚РѕРґРѕРј Р“Р°СѓСЃСЃР° СЃ РІС‹Р±РѕСЂРѕРј РІРµРґСѓС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
+// Решить систему Ax=B с плотной матрицей методом Гаусса с выбором ведущего элемента
 template<typename T>
 bool solveGauss(std::vector<std::vector<T>> A, std::vector<T>& x, std::vector<T> B){
     unsigned int n = A.size();
     if (n == 0 || A[0].size() != n || B.size() != n) 
-        return false; // РќРµРІРµСЂРЅС‹Рµ СЂР°Р·РјРµСЂС‹
+        return false; // Неверные размеры
     for (unsigned int k = 0; k < n - 1; k++){
-        // РџРѕСЃС‚РѕР»Р±С†РѕРІС‹Р№ РІС‹Р±РѕСЂ РіР»Р°РІРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
+        // Постолбцовый выбор главного элемента
         int m = k;
         for (int i = k + 1; i < n; i++){
             if (std::abs(A[i][k]) > std::abs(A[m][k]))
                 m = i;
         }
         if (std::abs(A[m][k]) < 1E-5)
-            return false; // РЎРёСЃС‚РµРјР° РІС‹СЂРѕР¶РґРµРЅР°
-        if (m != k) { // РћР±РјРµРЅ СЃС‚СЂРѕРє
+            return false; // Система вырождена
+        if (m != k) { // Обмен строк
             std::swap(A[k], A[m]);
             std::swap(B[k], B[m]);
         }
-        // РџСЂСЏРјРѕР№ С…РѕРґ
+        // Прямой ход
         for (int i = k + 1; i < n; i++){
             T factor = A[i][k] / A[k][k];
             B[i] -= factor * B[k];
@@ -340,25 +341,25 @@ bool solveGauss(std::vector<std::vector<T>> A, std::vector<T>& x, std::vector<T>
                 A[i][j] -= factor * A[k][j];
         }
     }
-    // РћР±СЂР°С‚РЅС‹Р№ С…РѕРґ
+    // Обратный ход
     for (int k = n - 1; k >= 0; k--){
         T sum = 0.0;
         for (int j = k + 1; j < n; j++)
             sum += A[k][j] * x[j];
         x[k] = (B[k] - sum) / A[k][k];
     }
-    return true; // РЈСЃРїРµС€РЅРѕРµ СЂРµС€РµРЅРёРµ
+    return true; // Успешное решение
 }
 
-// РЎСЂР°РІРЅРёС‚СЊ Р“Р°СѓСЃСЃР° Рё СЂР°Р·Р»РѕР¶РµРЅРёРµ С‚РµСЃС‚Р°РјРё РЅР° С‡РёСЃР»РѕРј РѕР±СѓСЃР»РѕРІР»РµРЅРЅРѕСЃС‚Рё
+// Сравнить Гаусса и разложение тестами на числом обусловленности
 void compareGaussLusq(int tests){
     int counter = 1; 
-    std::ofstream outFile("СЃomparison_methods.txt");
+    std::ofstream outFile("сomparison_methods.txt");
     if (!outFile.is_open()) {
-        std::cerr << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё." << std::endl;
+        std::cerr << "Не удалось открыть файл для записи." << std::endl;
         return;
     }
-    // Р—Р°РіРѕР»РѕРІРѕРє С‚Р°Р±Р»РёС†С‹
+    // Заголовок таблицы
     outFile << std::left
               << std::setw(5)  << "k"
               << std::setw(25) << "x^k (LU(sq))"
@@ -391,7 +392,7 @@ void compareGaussLusq(int tests){
         std::vector<double> g_x(n);
         bool ok2 = solveGauss(A, g_x, g_b);
 
-        // РџРµС‡Р°С‚СЊ СЃС‚СЂРѕРє С‚Р°Р±Р»РёС†С‹
+        // Печать строк таблицы
         for (int i = 0; i < n; i++){
                 outFile << std::left << std::setw(5) << (counter%10 == 0? std::to_string(counter/10) : " ")
             << std::setw(25) << (ok1 ? std::to_string(d_x[i]) : "N/A")
@@ -406,14 +407,14 @@ void compareGaussLusq(int tests){
     }
 }
 
-// РЎРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ РјР°С‚СЂРёС†Сѓ Р“РёР»СЊР±РµСЂС‚Р°
+// Сгенерировать матрицу Гильберта
 template<typename T>
 void generateHilbert(SkylineStorageMatrix<T>& dst, std::vector<T>& dstr, int n){
-    std::vector<std::vector<T>> square(n); // Р”Р»СЏ СѓРґРѕР±СЃС‚РІР° РїР°СЂР°Р»Р»РµР»СЊРЅРѕ РїСЂРѕС„РёР»СЊРЅРѕР№ РјР°С‚СЂРёС†Рµ
-    for (int i = 0; i < n; i++) // Р·Р°РїРѕР»РЅРёРј РєРІР°РґСЂР°С‚РЅСѓСЋ
+    std::vector<std::vector<T>> square(n); // Для удобства параллельно профильной матрице
+    for (int i = 0; i < n; i++) // заполним квадратную
         square[i].resize(n);
 
-    // РњР°С‚СЂРёС†Р°
+    // Матрица
     dst.ia.resize(n + 1);
     dst.ia[0] = 0;
     dst.ia[1] = 0;
@@ -449,7 +450,7 @@ void generateHilbert(SkylineStorageMatrix<T>& dst, std::vector<T>& dstr, int n){
         square[i][i] = dst.di[i];
     }
 
-    // Р’РµРєС‚РѕСЂ
+    // Вектор
     dstr.resize(n);
     for (int i = 0; i < n; i++){
         dstr[i] = (T)0;
@@ -458,15 +459,15 @@ void generateHilbert(SkylineStorageMatrix<T>& dst, std::vector<T>& dstr, int n){
     }
 }
 
-// РџСЂРѕРІРµСЃС‚Рё СЃРµСЂРёСЋ С‚РµСЃС‚РѕРІ СЃ РјР°С‚СЂРёС†Р°РјРё Р“РёР»СЊР±РµСЂС‚Р° СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё РѕС‚ n1 РґРѕ n2
+// Провести серию тестов с матрицами Гильберта размерности от n1 до n2
 void hilbertTestSeries(int n1, int n2){
-    // РћС‚РєСЂС‹РІР°РµРј С„Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё
+    // Открываем файл для записи
     std::ofstream outFile("hilbert_method.txt");
     if (!outFile.is_open()) {
-        std::cerr << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё." << std::endl;
+        std::cerr << "Не удалось открыть файл для записи." << std::endl;
         return;
     }
-    // Р—Р°РіРѕР»РѕРІРѕРє С‚Р°Р±Р»РёС†С‹
+    // Заголовок таблицы
     outFile << std::left << std::setw(5) << "k" 
             << std::setw(25) << "x^k (float)" 
             << std::setw(25) << "|x* - x^k| (float)" 
@@ -502,25 +503,26 @@ void hilbertTestSeries(int n1, int n2){
 
 
 void showMenu() {
-    std::cout << "Р’С‹Р±РµСЂРёС‚Рµ РєРѕРјР°РЅРґСѓ:" << std::endl;
-    std::cout << "1. Р РµС€РёС‚СЊ СЃРёСЃС‚РµРјСѓ СѓСЂР°РІРЅРµРЅРёР№ (double)" << std::endl;
-    std::cout << "2. Р РµС€РёС‚СЊ СЃРёСЃС‚РµРјСѓ СѓСЂР°РІРЅРµРЅРёР№ (float)" << std::endl;
-    std::cout << "3. Р РµС€РёС‚СЊ РєРІР°РґСЂР°С‚РЅСѓСЋ СЃРёСЃС‚РµРјСѓ СѓСЂР°РІРЅРµРЅРёР№ (double)" << std::endl;
-    std::cout << "4. РўРµСЃС‚ СЃРµСЂРёРё Р“РёР»СЊР±РµСЂС‚Р°" << std::endl;
-    std::cout << "5. РўРµСЃС‚ С‡РёСЃР»Р° РѕР±СѓСЃР»РѕРІР»РµРЅРЅРѕСЃС‚Рё" << std::endl;
-    std::cout << "6. РЎСЂР°РІРЅРµРЅРёРµ Р°Р»РіРѕСЂРёС‚РјРѕРІ Р“Р°СѓСЃСЃР° Рё LU-СЂР°Р·Р»РѕР¶РµРЅРёСЏ" << std::endl;
-    std::cout << "7. Р’С‹С…РѕРґ" << std::endl;
+    std::cout << "Выберите команду:" << std::endl;
+    std::cout << "1. Решить систему уравнений (double)" << std::endl;
+    std::cout << "2. Решить систему уравнений (float)" << std::endl;
+    std::cout << "3. Решить квадратную систему уравнений (double)" << std::endl;
+    std::cout << "4. Тест серии Гильберта" << std::endl;
+    std::cout << "5. Тест числа обусловленности" << std::endl;
+    std::cout << "6. Сравнение алгоритмов Гаусса и LU-разложения" << std::endl;
+    std::cout << "7. Выход" << std::endl;
 }
 
 int main(int argc, char** argv)
 {
+    SetConsoleOutputCP(1251);
     int memory_num_first, memory_num_end;
     int choice = -1;
     std::string inputFile, outputFile;
-    inputFile = "test2.txt";
+    inputFile = "test1.txt";
     while (choice != 7) {
         showMenu();
-        std::cout << "Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РєРѕРјР°РЅРґС‹: ";
+        std::cout << "Введите номер команды: ";
         std::cin >> choice;
         switch (choice) {
             case 1: {
@@ -533,7 +535,7 @@ int main(int argc, char** argv)
                 outputFile = "solve_double.txt";
                 std::fstream ofile(outputFile, std::ios::out);
                 if (!ofile.is_open()) 
-                    std::cerr << "РћС€РёР±РєР°: РЅРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» " << outputFile << " РґР»СЏ Р·Р°РїРёСЃРё." << std::endl;
+                    std::cerr << "Ошибка: не удалось открыть файл " << outputFile << " для записи." << std::endl;
                 std::vector<double> x(b.size());
                 solve(x, a, b);
                 writeVector(x, ofile);
@@ -549,7 +551,7 @@ int main(int argc, char** argv)
                 outputFile = "solve_float.txt";
                 std::fstream ofile(outputFile, std::ios::out);
                 if (!ofile.is_open()) 
-                    std::cerr << "РћС€РёР±РєР°: РЅРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» " << outputFile << " РґР»СЏ Р·Р°РїРёСЃРё." << std::endl;
+                    std::cerr << "Ошибка: не удалось открыть файл " << outputFile << " для записи." << std::endl;
                 std::vector<float> x(b.size());
                 solve(x, a, b);
                 writeVector(x, ofile);
@@ -561,51 +563,51 @@ int main(int argc, char** argv)
                 readSkyline(ifile, a);
                 std::vector<double> b;
                 readVector(ifile, b);
-                std::cout << "РћС‚Р»Р°РґРєР°: РСЃС…РѕРґРЅС‹Р№ С„Р°Р№Р» РїСЂРѕС‡РёС‚Р°РЅ. " << std::endl;
+                std::cout << "Отладка: Исходный файл прочитан. " << std::endl;
                 std::vector<std::vector<double>> A;
                 skylineToSquare(a, A);
-                std::cout << "РћС‚Р»Р°РґРєР°: РџРµСЂРµРІРѕРґ РІ РєРІР°РґСЂР°С‚ РїРµСЂРµРІРµРґРµРЅ. " << std::endl;
+                std::cout << "Отладка: Перевод в квадрат переведен. " << std::endl;
 
                 outputFile = "solve_square.txt";    
                 std::fstream ofile(outputFile, std::ios::out);
                 if (!ofile.is_open()) 
-                    std::cerr << "РћС€РёР±РєР°: РЅРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» " << outputFile << " РґР»СЏ Р·Р°РїРёСЃРё." << std::endl;   
+                    std::cerr << "Ошибка: не удалось открыть файл " << outputFile << " для записи." << std::endl;   
                 std::vector<double> x(b.size());
                 solveGauss(A, x, b);
-                std::cout << "РћС‚Р»Р°РґРєР°: Р“Р°СѓСЃСЃ РїРѕСЃС‡РёС‚Р°РЅ. " << std::endl;
+                std::cout << "Отладка: Гаусс посчитан. " << std::endl;
 
                 writeVector(x, ofile);
-                std::cout << "РћС‚Р»Р°РґРєР°: Р—Р°РїРёСЃСЊ СЂРµР·СѓР»СЊС‚Р°С‚Р°. " << std::endl;
+                std::cout << "Отладка: Запись результата. " << std::endl;
 
                 break;
             }
             case 4: {
-                std::cout << "Р’РІРµРґРёС‚Рµ РЅР°С‡Р°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ: " << std::endl;
+                std::cout << "Введите начальное значение: " << std::endl;
                 std::cin >> memory_num_first; 
-                std::cout << "Р’РІРµРґРёС‚Рµ РєРѕРЅРµС‡РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ: " << std::endl;
+                std::cout << "Введите конечное значение: " << std::endl;
                 std::cin >> memory_num_end;
                 hilbertTestSeries(memory_num_first, memory_num_end);
                 break;
             }
             case 5: {
-                std::cout << "Р’РІРµРґРёС‚Рµ СЂР°Р·РјРµСЂРЅРѕСЃС‚СЊ РјР°С‚СЂРёС†С‹: " << std::endl;
+                std::cout << "Введите размерность матрицы: " << std::endl;
                 std::cin >> memory_num_first; 
                 conditionNumberTestSeries(memory_num_first);
                 break;
             }
             case 6: {
-                std::cout << "Р’РІРµРґРёС‚Рµ СЂР°Р·РјРµСЂРЅРѕСЃС‚СЊ РјР°С‚СЂРёС†С‹: " << std::endl;
+                std::cout << "Введите размерность матрицы: " << std::endl;
                 std::cin >> memory_num_first; 
                 compareGaussLusq(memory_num_first);
                 break;
             }
             case 7: {
-                std::cout << "Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹." << std::endl;
+                std::cout << "Выход из программы." << std::endl;
                 break;
                 
             }
             default: {
-                std::cout << "РќРµРІРµСЂРЅС‹Р№ РІС‹Р±РѕСЂ. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°." << std::endl;
+                std::cout << "Неверный выбор. Пожалуйста, попробуйте снова." << std::endl;
                 break;
             }
         }

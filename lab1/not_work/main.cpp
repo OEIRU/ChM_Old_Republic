@@ -5,7 +5,7 @@ int main(int argc, char** argv)
     int memory_num_first, memory_num_end;
     int choice = -1;
     std::string inputFile, outputFile;
-    inputFile = "test2.txt";
+    inputFile = "test1.txt";
     while (choice != 7) {
         showMenu();
         std::cout << "Введите номер команды: ";
