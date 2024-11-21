@@ -1,0 +1,701 @@
+
+
+tek iter := 1  otn.nevyazka := inf
+otn pogr resh := 7.21e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 2  otn.nevyazka := inf
+otn pogr resh := 7.15e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 3  otn.nevyazka := inf
+otn pogr resh := 7.10e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 4  otn.nevyazka := inf
+otn pogr resh := 7.06e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 5  otn.nevyazka := inf
+otn pogr resh := 7.02e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 6  otn.nevyazka := inf
+otn pogr resh := 6.98e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 7  otn.nevyazka := inf
+otn pogr resh := 6.95e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 8  otn.nevyazka := inf
+otn pogr resh := 6.92e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 9  otn.nevyazka := inf
+otn pogr resh := 6.89e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 10  otn.nevyazka := inf
+otn pogr resh := 6.86e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 11  otn.nevyazka := inf
+otn pogr resh := 6.84e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 12  otn.nevyazka := inf
+otn pogr resh := 6.82e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 13  otn.nevyazka := inf
+otn pogr resh := 6.81e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 14  otn.nevyazka := inf
+otn pogr resh := 6.80e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 15  otn.nevyazka := inf
+otn pogr resh := 6.79e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 16  otn.nevyazka := inf
+otn pogr resh := 6.78e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 17  otn.nevyazka := inf
+otn pogr resh := 6.77e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 18  otn.nevyazka := inf
+otn pogr resh := 6.77e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 19  otn.nevyazka := inf
+otn pogr resh := 6.77e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 20  otn.nevyazka := inf
+otn pogr resh := 6.77e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 21  otn.nevyazka := inf
+otn pogr resh := 6.78e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 22  otn.nevyazka := inf
+otn pogr resh := 6.78e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 23  otn.nevyazka := inf
+otn pogr resh := 6.79e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 24  otn.nevyazka := inf
+otn pogr resh := 6.80e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 25  otn.nevyazka := inf
+otn pogr resh := 6.81e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 26  otn.nevyazka := inf
+otn pogr resh := 6.82e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 27  otn.nevyazka := inf
+otn pogr resh := 6.84e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 28  otn.nevyazka := inf
+otn pogr resh := 6.85e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 29  otn.nevyazka := inf
+otn pogr resh := 6.87e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 30  otn.nevyazka := inf
+otn pogr resh := 6.89e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 31  otn.nevyazka := inf
+otn pogr resh := 6.91e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 32  otn.nevyazka := inf
+otn pogr resh := 6.93e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 33  otn.nevyazka := inf
+otn pogr resh := 6.95e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 34  otn.nevyazka := inf
+otn pogr resh := 6.97e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 35  otn.nevyazka := inf
+otn pogr resh := 6.99e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 36  otn.nevyazka := inf
+otn pogr resh := 7.02e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 37  otn.nevyazka := inf
+otn pogr resh := 7.04e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 38  otn.nevyazka := inf
+otn pogr resh := 7.07e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 39  otn.nevyazka := inf
+otn pogr resh := 7.09e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 40  otn.nevyazka := inf
+otn pogr resh := 7.12e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 41  otn.nevyazka := inf
+otn pogr resh := 7.15e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 42  otn.nevyazka := inf
+otn pogr resh := 7.18e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 43  otn.nevyazka := inf
+otn pogr resh := 7.21e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 44  otn.nevyazka := inf
+otn pogr resh := 7.23e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 45  otn.nevyazka := inf
+otn pogr resh := 7.26e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 46  otn.nevyazka := inf
+otn pogr resh := 7.29e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 47  otn.nevyazka := inf
+otn pogr resh := 7.32e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 48  otn.nevyazka := inf
+otn pogr resh := 7.35e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 49  otn.nevyazka := inf
+otn pogr resh := 7.38e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 50  otn.nevyazka := inf
+otn pogr resh := 7.42e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 51  otn.nevyazka := inf
+otn pogr resh := 7.45e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 52  otn.nevyazka := inf
+otn pogr resh := 7.48e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 53  otn.nevyazka := inf
+otn pogr resh := 7.51e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 54  otn.nevyazka := inf
+otn pogr resh := 7.54e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 55  otn.nevyazka := inf
+otn pogr resh := 7.57e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 56  otn.nevyazka := inf
+otn pogr resh := 7.60e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 57  otn.nevyazka := inf
+otn pogr resh := 7.63e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 58  otn.nevyazka := inf
+otn pogr resh := 7.66e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 59  otn.nevyazka := inf
+otn pogr resh := 7.70e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 60  otn.nevyazka := inf
+otn pogr resh := 7.73e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 61  otn.nevyazka := inf
+otn pogr resh := 7.76e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 62  otn.nevyazka := inf
+otn pogr resh := 7.79e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 63  otn.nevyazka := inf
+otn pogr resh := 7.82e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 64  otn.nevyazka := inf
+otn pogr resh := 7.85e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 65  otn.nevyazka := inf
+otn pogr resh := 7.88e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 66  otn.nevyazka := inf
+otn pogr resh := 7.91e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 67  otn.nevyazka := inf
+otn pogr resh := 7.94e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 68  otn.nevyazka := inf
+otn pogr resh := 7.97e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 69  otn.nevyazka := inf
+otn pogr resh := 8.00e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 70  otn.nevyazka := inf
+otn pogr resh := 8.03e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 71  otn.nevyazka := inf
+otn pogr resh := 8.06e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 72  otn.nevyazka := inf
+otn pogr resh := 8.09e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 73  otn.nevyazka := inf
+otn pogr resh := 8.12e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 74  otn.nevyazka := inf
+otn pogr resh := 8.15e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 75  otn.nevyazka := inf
+otn pogr resh := 8.18e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 76  otn.nevyazka := inf
+otn pogr resh := 8.21e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 77  otn.nevyazka := inf
+otn pogr resh := 8.24e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 78  otn.nevyazka := inf
+otn pogr resh := 8.26e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 79  otn.nevyazka := inf
+otn pogr resh := 8.29e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 80  otn.nevyazka := inf
+otn pogr resh := 8.32e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 81  otn.nevyazka := inf
+otn pogr resh := 8.35e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 82  otn.nevyazka := inf
+otn pogr resh := 8.37e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 83  otn.nevyazka := inf
+otn pogr resh := 8.40e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 84  otn.nevyazka := inf
+otn pogr resh := 8.43e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 85  otn.nevyazka := inf
+otn pogr resh := 8.45e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 86  otn.nevyazka := inf
+otn pogr resh := 8.48e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 87  otn.nevyazka := inf
+otn pogr resh := 8.50e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 88  otn.nevyazka := inf
+otn pogr resh := 8.53e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 89  otn.nevyazka := inf
+otn pogr resh := 8.55e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 90  otn.nevyazka := inf
+otn pogr resh := 8.58e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 91  otn.nevyazka := inf
+otn pogr resh := 8.60e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 92  otn.nevyazka := inf
+otn pogr resh := 8.63e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 93  otn.nevyazka := inf
+otn pogr resh := 8.65e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 94  otn.nevyazka := inf
+otn pogr resh := 8.67e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 95  otn.nevyazka := inf
+otn pogr resh := 8.70e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 96  otn.nevyazka := inf
+otn pogr resh := 8.72e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 97  otn.nevyazka := inf
+otn pogr resh := 8.74e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 98  otn.nevyazka := inf
+otn pogr resh := 8.77e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 99  otn.nevyazka := inf
+otn pogr resh := 8.79e-01
+число обусловленностей >=0.00e+00
+
+
+
+
+tek iter := 100  otn.nevyazka := inf
+otn pogr resh := 8.81e-01
+число обусловленностей >=0.00e+00
+
+
+время: 2.10e-02 seconds
