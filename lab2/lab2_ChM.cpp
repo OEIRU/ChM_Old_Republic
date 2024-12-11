@@ -8,16 +8,127 @@
 using namespace std;
 using namespace std::chrono;
 
-static void readInf(const string& filename, int& n, int& m, double& omega, int& MAXITER, double& tol, int& flag);
-static double sum(const vector<vector<double>>& A, const vector<double>& y, const int& pos, const int& m, const int& flag);
-static double getNorm(const vector<double>& F);
-static double getFinalNorm(const vector<vector<double>>& A, const vector<double>& F, const vector<double>& x, const int& m);
-static void Yakoby_Zaydelya(const vector<vector<double>>& A, const vector<double>& b, vector<double>& X, vector<double>& Xprev, const int& m, const double& omega,
-   int& MAXITER, double& tol, const bool& flag);
-static void readVect(const string& filename, vector<double>& vec, const int& n);
-static void readMatrix(string& filename, vector<vector<double>>& A, const int& n);
-static void writeVectorToFile(vector<double>& x, const string& filename);
+double sum(const vector<vector<double>>& A, const vector<double>& y, const int& pos, const int& m, const int& flag)
+{
+   double summ = 0;
+   if (pos > 0) summ += A[1][pos] * y[pos - 1];
+   if (flag == 1 || flag == 0) summ += A[2][pos] * y[pos];
+   if (pos > m + 1) summ += A[0][pos] * y[pos - m - 2];
+   if (pos < y.size() - 1) summ += A[3][pos] * y[pos + 1];
+   if (pos < y.size() - 2 - m) summ += A[4][pos] * y[pos + m + 2];
 
+   return summ;
+}
+
+void readInf(const string& filename, int& n, int& m, double& omega, int& MAXITER, double& tol, int& flag)
+{
+   ifstream fin(filename);
+
+   if (!fin)
+   {
+      cerr << "Error reading pars file." << endl;
+      exit(1);
+   }
+
+   fin >> n >> m >>omega >> MAXITER >> tol >> flag;
+   cout << n << " " << m << " " << omega << " " << MAXITER << " " << tol << " " << flag<<endl;
+   fin.close();
+}
+void readMatrix(string& filename, vector<vector<double>>& A, const int& n) {
+   ifstream fin(filename);
+   if (!fin)
+   {
+      cerr << "Error reading matrix file." << endl;
+      exit(1);
+   }
+   for (int i = 0; i != 5; i++) {
+      for (int j = 0; j != n; j++) {
+         fin >> A[i][j];
+      }
+   }
+
+   fin.close();
+}
+void readVect(const string& filename, vector<double>& vec, const int& n)
+{
+   ifstream fin(filename);
+
+   if (!fin)
+   {
+      cerr << "Error reading vector file." << endl;
+      exit(1);
+   }
+
+   for (int i = 0; i < n; i++)
+      fin >> vec[i];
+
+   fin.close();
+}
+double getNorm(const vector<double>& F)
+{
+   int n = int(F.size());
+
+   double summ = 0;
+
+   if (n < 1) return 0;
+
+   for (int i = 0; i != n; i++)
+      summ += F[i] * F[i];
+
+   return sqrt(summ);
+}
+double getFinalNorm(const vector<vector<double>>& A, const vector<double>& F, const vector<double>& x, const int& m)
+{
+   vector<double> vec;
+   int n = (int)x.size();
+   vec.resize(n);
+
+   for (int i = 0; i < n; i++)
+      vec[i] = F[i] - sum(A, x, i, m, 1);
+
+   return getNorm(vec) / getNorm(F);
+}
+
+void Yakoby_Zaydelya(const vector<vector<double>>& A, const vector<double>& b, vector<double>& X, vector<double>& Xprev, const int& m, const double& omega,
+   int& MAXITER, double& tol, const bool& flag)
+{
+   int n = (int)b.size();
+   double summ;
+   double norm = 1;
+   int i;
+   for (i = 0; i != MAXITER && norm >= tol; i++)
+   {
+      Xprev = X;
+      for (int j = 0; j < n; j++)
+      {
+         summ = sum(A, Xprev, j, m, flag);
+         X[j] = Xprev[j] + omega / A[2][j] * (b[j] - summ);
+      }
+      norm = getFinalNorm(A, b, X, m);
+      //cout << "iteration number = " << i << endl; // Условие
+      //cout << "norm = " << norm << endl; // Условие
+   }
+
+   if (norm >= tol)
+      cout << "exit by max_iterations" << endl;
+   else
+      cout << "exit by " << i << " iterations" << endl;
+
+}
+void writeVectorToFile(vector<double>& x, const string& filename) {
+   ofstream file(filename);
+
+   if (!file.is_open()) {
+      cerr << "Error reading output file." << endl;
+      return;
+   }
+
+   for (double value : x) {
+      file << scientific << setprecision(15) << value << "\n";
+   }
+
+   file.close();
+}
 
 int main() {
    setlocale(LC_ALL, "RUS");
@@ -75,124 +186,4 @@ int main() {
    writeVectorToFile(x, file_x_new_vect);
 
    return 0;
-}
-
-static void readInf(const string& filename, int& n, int& m, double& omega, int& MAXITER, double& tol, int& flag)
-{
-   ifstream fin(filename);
-
-   if (!fin)
-   {
-      cerr << "Error reading pars file." << endl;
-      exit(1);
-   }
-
-   fin >> n >> m >>omega >> MAXITER >> tol >> flag;
-   cout << n << " " << m << " " << omega << " " << MAXITER << " " << tol << " " << flag<<endl;
-   fin.close();
-}
-static void readMatrix(string& filename, vector<vector<double>>& A, const int& n) {
-   ifstream fin(filename);
-   if (!fin)
-   {
-      cerr << "Error reading matrix file." << endl;
-      exit(1);
-   }
-   for (int i = 0; i != 5; i++) {
-      for (int j = 0; j != n; j++) {
-         fin >> A[i][j];
-      }
-   }
-
-   fin.close();
-}
-static void readVect(const string& filename, vector<double>& vec, const int& n)
-{
-   ifstream fin(filename);
-
-   if (!fin)
-   {
-      cerr << "Error reading vector file." << endl;
-      exit(1);
-   }
-
-   for (int i = 0; i < n; i++)
-      fin >> vec[i];
-
-   fin.close();
-}
-static double getNorm(const vector<double>& F)
-{
-   int n = int(F.size());
-
-   double summ = 0;
-
-   if (n < 1) return 0;
-
-   for (int i = 0; i != n; i++)
-      summ += F[i] * F[i];
-
-   return sqrt(summ);
-}
-static double getFinalNorm(const vector<vector<double>>& A, const vector<double>& F, const vector<double>& x, const int& m)
-{
-   vector<double> vec;
-   int n = (int)x.size();
-   vec.resize(n);
-
-   for (int i = 0; i < n; i++)
-      vec[i] = F[i] - sum(A, x, i, m, 1);
-
-   return getNorm(vec) / getNorm(F);
-}
-static double sum(const vector<vector<double>>& A, const vector<double>& y, const int& pos, const int& m, const int& flag)
-{
-   double summ = 0;
-   if (pos > 0) summ += A[1][pos] * y[pos - 1];
-   if (flag == 1 || flag == 0) summ += A[2][pos] * y[pos];
-   if (pos > m + 1) summ += A[0][pos] * y[pos - m - 2];
-   if (pos < y.size() - 1) summ += A[3][pos] * y[pos + 1];
-   if (pos < y.size() - 2 - m) summ += A[4][pos] * y[pos + m + 2];
-
-   return summ;
-}
-static void Yakoby_Zaydelya(const vector<vector<double>>& A, const vector<double>& b, vector<double>& X, vector<double>& Xprev, const int& m, const double& omega,
-   int& MAXITER, double& tol, const bool& flag)
-{
-   int n = (int)b.size();
-   double summ;
-   double norm = 1;
-   int i;
-   for (i = 0; i != MAXITER && norm >= tol; i++)
-   {
-      Xprev = X;
-      for (int j = 0; j < n; j++)
-      {
-         summ = sum(A, Xprev, j, m, flag);
-         X[j] = Xprev[j] + omega / A[2][j] * (b[j] - summ);
-      }
-      norm = getFinalNorm(A, b, X, m);
-      //cout << "iteration number = " << i << endl; // Условие
-      //cout << "norm = " << norm << endl; // Условие
-   }
-
-   if (norm >= tol)
-      cout << "exit by max_iterations" << endl;
-   else
-      cout << "exit by " << i << " iterations" << endl;
-
-}
-static void writeVectorToFile(vector<double>& x, const string& filename) {
-   ofstream file(filename);
-
-   if (!file.is_open()) {
-      cerr << "Error reading output file." << endl;
-      return;
-   }
-
-   for (double value : x) {
-      file << scientific << setprecision(15) << value << "\n";
-   }
-
-   file.close();
 }
