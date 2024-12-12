@@ -105,8 +105,8 @@ void Yakoby_Zaydelya(const vector<vector<double>>& A, const vector<double>& b, v
          X[j] = Xprev[j] + omega / A[2][j] * (b[j] - summ);
       }
       norm = getFinalNorm(A, b, X, m);
-      //cout << "iteration number = " << i << endl; // Условие
-      //cout << "norm = " << norm << endl; // Условие
+      cout << "iteration number = " << i << endl; // Условие
+      cout << "norm = " << norm << endl; // Условие
    }
 
    if (norm >= tol)
