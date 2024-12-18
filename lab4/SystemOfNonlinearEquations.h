@@ -1,6 +1,6 @@
 #pragma once
-#include "common.h"
 #include "LinearAlgebra.h"
+
 class VectorOfFunctions
 {
 public:
@@ -36,12 +36,12 @@ struct SystemParameters
     int m;
     int maxiter;
     int maxiterBeta;
-    real epsF;
-    real epsBeta;
+    double epsF;
+    double epsBeta;
     VectorOfFunctions *F;
     Vector x0 = Vector(1);
-    SystemParameters(int n, int m, int maxiter, int maxiterBeta, real epsF,
-                     real epsBeta, VectorOfFunctions *Function, Vector x0);
+    SystemParameters(int n, int m, int maxiter, int maxiterBeta, double epsF,
+        double epsBeta, VectorOfFunctions *Function, Vector x0);
 };
 class Squaring
 {
@@ -65,8 +65,8 @@ private:
     int m;
     int maxiter;
     int maxiterBeta;
-    real epsF;
-    real epsBeta;
+    double epsF;
+    double epsBeta;
     VectorOfFunctions *F;
     Vector x0 = Vector(1);
     Squaring *squaring;

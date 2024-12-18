@@ -1,8 +1,9 @@
 #pragma once
 #include "SystemOfNonlinearEquations.h"
+#include "common.h"
 #include <iostream>
 SystemParameters::SystemParameters(int n, int m, int maxiter, int maxiterBeta,
-                                   real epsF, real epsBeta, VectorOfFunctions *Function, Vector x0)
+    double epsF, double epsBeta, VectorOfFunctions *Function, Vector x0)
 {
     this->n = n;
     this->m = m;
@@ -40,7 +41,7 @@ void ExcludingRows::LeadToSquare(Matrix &matrix, Vector &vector)
     int n = matrix.Columns();
     int rowsToDelete = m - n;
     int row;
-    real min;
+    double min;
     for (int i = 0; i < rowsToDelete; i++)
     {
         row = 0;
@@ -66,8 +67,8 @@ void Convolution::LeadToSquare(Matrix &matrix, Vector &vector)
     int n = matrix.Columns();
     int rowsToDelete = m - n + 1;
     int row;
-    real min;
-    real sum = 0.0;
+    double min;
+    double sum = 0.0;
     Vector rowsSum(n);
     for (int i = 0; i < rowsToDelete; i++)
     {
@@ -115,7 +116,7 @@ SystemOfNonlinearEquations::SystemOfNonlinearEquations(struct SystemParameters
 Matrix SystemOfNonlinearEquations::FormJacobiMatrix(Vector x)
 {
     Matrix Jacobi(m, n);
-    real h = 1e-10;
+    double h = 1e-10;
     Vector temp = x;
     Vector Fp = F->ComputeInPoint(x);
     for (int i = 0; i < m; i++)
@@ -141,7 +142,7 @@ Vector SystemOfNonlinearEquations::ComputeDirectionByGauss(Matrix matrix, Vector
     int i;
     for (i = 0; i < n; i++)
     {
-        real mainElement = 0.0;
+        double mainElement = 0.0;
         int row = 0;
         for (int j = i; j < n; j++)
         {
@@ -185,12 +186,12 @@ Vector SystemOfNonlinearEquations::ComputeDirectionByGauss(Matrix matrix, Vector
 }
 Vector SystemOfNonlinearEquations::Solve()
 {
-    real F0Norm = F->ComputeInPoint(x0).EuqlideanNorm();
-    real FNorm;
-    real FkNorm = F0Norm;
+    double F0Norm = F->ComputeInPoint(x0).EuqlideanNorm();
+    double FNorm;
+    double FkNorm = F0Norm;
     Vector xk = x0;
     Vector xk1(n);
-    real discrepancy = FkNorm / F0Norm;
+    double discrepancy = FkNorm / F0Norm;
     for (int k = 0; k < maxiter && discrepancy > epsF; k++)
     {
         Vector Fk = F->ComputeInPoint(xk);
@@ -200,7 +201,7 @@ Vector SystemOfNonlinearEquations::Solve()
             squaring->LeadToSquare(Jacobi, Fk);
         }
         Vector dx = ComputeDirectionByGauss(Jacobi, Fk);
-        real beta = 1.0;
+        double beta = 1.0;
         FNorm = FkNorm;
         for (int v = 0; v < maxiterBeta && beta > epsBeta; v++)
         {

@@ -1,4 +1,5 @@
 #include "LinearAlgebra.h"
+#include "common.h"
 #include <fstream>
 Vector::Vector(int size)
 {
@@ -8,20 +9,20 @@ int Vector::Size()
 {
     return data.size();
 }
-real Vector::EuqlideanNorm()
+double Vector::EuqlideanNorm()
 {
-    real sum = 0.0;
+    double sum = 0.0;
     for (int i = 0; i < data.size(); i++)
     {
         sum += data[i] * data[i];
     }
     return sqrt(sum);
 }
-real &Vector::operator()(int index)
+double&Vector::operator()(int index)
 {
     return data[index];
 }
-Vector operator*(real constant, const Vector &vector)
+Vector operator*(double constant, const Vector &vector)
 {
     Vector result = vector;
     for (int i = 0; i < result.Size(); i++)
@@ -30,7 +31,7 @@ Vector operator*(real constant, const Vector &vector)
     }
     return result;
 }
-Vector operator*(const Vector &vector, real constant)
+Vector operator*(const Vector &vector, double constant)
 {
     Vector result = vector;
     for (int i = 0; i < result.Size(); i++)
@@ -39,9 +40,9 @@ Vector operator*(const Vector &vector, real constant)
     }
     return result;
 }
-real operator*(const Vector &first, const Vector &second)
+double operator*(const Vector &first, const Vector &second)
 {
-    real result = 0.0;
+    double result = 0.0;
     for (int i = 0; i < second.data.size(); i++)
     {
         result += first.data[i] * second.data[i];
@@ -93,7 +94,7 @@ Matrix Matrix::Transpose()
     }
     return result;
 }
-Matrix operator*(real constant, const Matrix &matrix)
+Matrix operator*(double constant, const Matrix &matrix)
 {
     Matrix result(matrix.data.size());
     for (int i = 0; i < result.data.size(); i++)
@@ -105,7 +106,7 @@ Matrix operator*(real constant, const Matrix &matrix)
     }
     return result;
 }
-Matrix operator*(const Matrix &matrix, real constant)
+Matrix operator*(const Matrix &matrix, double constant)
 {
     Matrix result(matrix.data.size());
     for (int i = 0; i < result.data.size(); i++)
@@ -133,7 +134,7 @@ Matrix operator*(const Matrix &first, const Matrix &second)
     }
     return result;
 }
-real &Matrix::operator()(const int row, const int column)
+double &Matrix::operator()(const int row, const int column)
 {
     return data[row][column];
 }
