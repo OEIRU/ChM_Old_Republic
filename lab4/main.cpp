@@ -1,44 +1,224 @@
-#include "LinearAlgebra.h"
-#include "SystemOfNonlinearEquations.h"
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <cmath>
+#include <iomanip>
 
+using namespace std;
+
+// РўРёРїС‹ РґР°РЅРЅС‹С…
+typedef vector<double> Vector;
+typedef vector<vector<double>> Matrix;
+
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РІС‹С‡РёСЃР»РµРЅРёСЏ РµРІРєР»РёРґРѕРІРѕР№ РЅРѕСЂРјС‹ РІРµРєС‚РѕСЂР°
+double euclideanNorm(const Vector &v) {
+    double sum = 0.0;
+    for (double val : v) {
+        sum += val * val;
+    }
+    return sqrt(sum);
+}
+
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ СѓРјРЅРѕР¶РµРЅРёСЏ РјР°С‚СЂРёС†С‹ РЅР° РІРµРєС‚РѕСЂ
+Vector matrixVectorMultiply(const Matrix &mat, const Vector &vec) {
+    Vector result(mat.size(), 0.0);
+    for (size_t i = 0; i < mat.size(); ++i) {
+        for (size_t j = 0; j < mat[i].size(); ++j) {
+            result[i] += mat[i][j] * vec[j];
+        }
+    }
+    return result;
+}
+
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РІС‹С‡РёСЃР»РµРЅРёСЏ СЏРєРѕР±РёР°РЅР°
+Matrix formJacobiMatrix(const Vector &x, Vector F(const Vector &), int m, int n) {
+    Matrix Jacobi(m, Vector(n, 0.0));
+    double h = 1e-10;
+    Vector temp = x;
+    Vector Fp = F(x);
+
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            temp[j] += h;
+            Vector Fp_h = F(temp);
+            for (int k = 0; k < m; ++k) {
+                Fp_h[k] -= Fp[k];
+            }
+            Jacobi[i][j] = Fp_h[i] / h;
+            temp[j] = x[j];
+        }
+    }
+    return Jacobi;
+}
+
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ СЂРµС€РµРЅРёСЏ СЃРёСЃС‚РµРјС‹ Р»РёРЅРµР№РЅС‹С… СѓСЂР°РІРЅРµРЅРёР№ РјРµС‚РѕРґРѕРј Р“Р°СѓСЃСЃР°
+Vector solveGauss(Matrix mat, Vector vec) {
+    int n = vec.size();
+    for (int i = 0; i < n; ++i) {
+        double maxEl = abs(mat[i][i]);
+        int maxRow = i;
+        for (int k = i + 1; k < n; ++k) {
+            if (abs(mat[k][i]) > maxEl) {
+                maxEl = abs(mat[k][i]);
+                maxRow = k;
+            }
+        }
+
+        swap(mat[maxRow], mat[i]);
+        swap(vec[maxRow], vec[i]);
+
+        for (int k = i + 1; k < n; ++k) {
+            double c = -mat[k][i] / mat[i][i];
+            for (int j = i; j < n; ++j) {
+                if (i == j) {
+                    mat[k][j] = 0;
+                } else {
+                    mat[k][j] += c * mat[i][j];
+                }
+            }
+            vec[k] += c * vec[i];
+        }
+    }
+
+    Vector x(n);
+    for (int i = n - 1; i >= 0; --i) {
+        x[i] = vec[i] / mat[i][i];
+        for (int k = i - 1; k >= 0; --k) {
+            vec[k] -= mat[k][i] * x[i];
+        }
+    }
+    return x;
+}
+
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ СЃРІРµСЂС‚РєРё СЃРёСЃС‚РµРјС‹
+void convolution(Matrix &mat, Vector &vec) {
+    int m = mat.size();
+    int n = mat[0].size();
+    int rowsToDelete = m - n + 1;
+    double sum = 0.0;
+    Vector rowsSum(n, 0.0);
+
+    for (int i = 0; i < rowsToDelete; ++i) {
+        int row = 0;
+        double min = fabs(vec[0]);
+        for (int j = 0; j < m - i; ++j) {
+            if (fabs(vec[j]) < min) {
+                min = fabs(vec[j]);
+                row = j;
+            }
+        }
+        sum += pow(vec[row], 2);
+        for (int j = 0; j < n; ++j) {
+            rowsSum[j] += pow(mat[row][j], 2);
+        }
+        swap(vec[row], vec[m - i - 1]);
+        swap(mat[row], mat[m - i - 1]);
+    }
+    vec[n - 1] = sum;
+    for (int i = 0; i < n; ++i) {
+        mat[n - 1][i] = rowsSum[i];
+    }
+}
+
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ СЂРµС€РµРЅРёСЏ СЃРёСЃС‚РµРјС‹ РЅРµР»РёРЅРµР№РЅС‹С… СѓСЂР°РІРЅРµРЅРёР№ РјРµС‚РѕРґРѕРј РќСЊСЋС‚РѕРЅР°
+Vector solveNewton(const Vector &x0, Vector F(const Vector &), int n, int m, int maxiter, double epsF) {
+    Vector xk = x0;
+    double F0Norm = euclideanNorm(F(x0));
+    double FkNorm = F0Norm;
+
+    for (int k = 0; k < maxiter && FkNorm / F0Norm > epsF; ++k) {
+        Vector Fk = F(xk);
+        Matrix Jacobi = formJacobiMatrix(xk, F, m, n);
+        if (m != n) {
+            convolution(Jacobi, Fk);
+        }
+        Vector dx = solveGauss(Jacobi, Fk);
+
+        for (int i = 0; i < n; ++i) {
+            xk[i] -= dx[i];
+        }
+        FkNorm = euclideanNorm(F(xk));
+
+        cout << "Iteration " << k << ": x = ";
+        for (double val : xk) {
+            cout << val << " ";
+        }
+        cout << ", Discrepancy = " << FkNorm / F0Norm << endl;
+    }
+    return xk;
+}
+
+// РџСЂРёРјРµСЂ СЃРёСЃС‚РµРјС‹ СѓСЂР°РІРЅРµРЅРёР№
+Vector systemEquations(const Vector &x) {
+    Vector F(2);
+    F[0] = pow(x[0] + 2, 2) + pow(x[1] - 2, 2) - 4;
+    F[1] = pow(x[0] - 2, 2) + pow(x[1] - 2, 2) - 4;
+    return F;
+}
+
+// РћСЃРЅРѕРІРЅР°СЏ С„СѓРЅРєС†РёСЏ
 int main() {
-    // Параметры задачи
-    int n = 2; // Размерность системы
-    int m = 2; // Количество уравнений
-    int maxIter = 100; // Максимальное количество итераций
-    int maxIterBeta = 50; // Максимальное количество итераций для параметра бета
-    double epsF = 1e-6; // Точность по норме функции
-    double epsBeta = 1e-6; // Точность по бета
+    // РћС‚РєСЂС‹РІР°РµРј С„Р°Р№Р» РґР»СЏ С‡С‚РµРЅРёСЏ РІС…РѕРґРЅС‹С… РґР°РЅРЅС‹С…
+    ifstream inFile("input.txt");
+    if (!inFile.is_open()) {
+        cerr << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» input.txt\n";
+        return 1;
+    }
 
-    // Задаем начальное приближение, как в графиках
-    Vector x0(n);
-    x0(0) = -3; // x1 начальное
-    x0(1) = 0;  // x2 начальное
+    int n, m, maxiter;
+    double epsF;
+    Vector x0;
 
-    // Определяем систему нелинейных уравнений (пересекающиеся окружности)
-    DisjointCircles function; // Используется класс для описания окружностей
+    // РЎС‡РёС‚С‹РІР°РµРј РґР°РЅРЅС‹Рµ РёР· С„Р°Р№Р»Р°
+    inFile >> n >> m >> maxiter >> epsF;
+    x0.resize(n);
+    for (int i = 0; i < n; ++i) {
+        inFile >> x0[i];
+    }
+    inFile.close();
 
-    // Создаем параметры системы
-    SystemParameters params(n, m, maxIter, maxIterBeta, epsF, epsBeta, &function, x0);
+    // Р РµС€РµРЅРёРµ СЃРёСЃС‚РµРјС‹
+    Vector solution = solveNewton(x0, systemEquations, n, m, maxiter, epsF);
 
-    // Выбираем метод обработки (заменяем Symmetrization на Convolution или ExcludingRows)
-    Convolution squaring; // Используется метод свертки
+    // Р—Р°РїРёСЃС‹РІР°РµРј СЂРµР·СѓР»СЊС‚Р°С‚С‹ РІ С„Р°Р№Р»
+    ofstream outFile("output.txt");
+    if (outFile.is_open()) {
+        outFile << "Р РµС€РµРЅРёРµ СЃРёСЃС‚РµРјС‹:\n";
+        for (int i = 0; i < n; ++i) {
+            outFile << "x" << i + 1 << " = " << fixed << setprecision(6) << solution[i] << "\n";
+        }
+        outFile.close();
+    } else {
+        cerr << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» output.txt РґР»СЏ Р·Р°РїРёСЃРё.\n";
+    }
 
-    // Создаем объект решения системы
-    SystemOfNonlinearEquations solver(params, &squaring);
+    // Р—Р°РїРёСЃС‹РІР°РµРј РёС‚РµСЂР°С†РёРё РІ С„Р°Р№Р» РґР»СЏ Р°РЅР°Р»РёР·Р°
+    ofstream iterFile("iterations.txt");
+    if (iterFile.is_open()) {
+        Vector xk = x0;
+        double F0Norm = euclideanNorm(systemEquations(x0));
+        double FkNorm = F0Norm;
 
-    // Пытаемся решить систему
-    Vector solution = solver.Solve();
+        iterFile << "k,x1,x2,beta,discrepancy\n";
+        for (int k = 0; k < maxiter && FkNorm / F0Norm > epsF; ++k) {
+            Vector Fk = systemEquations(xk);
+            Matrix Jacobi = formJacobiMatrix(xk, systemEquations, m, n);
+            if (m != n) {
+                convolution(Jacobi, Fk);
+            }
+            Vector dx = solveGauss(Jacobi, Fk);
 
-    // Выводим результат
-    std::cout << "Решение системы:" << std::endl;
-    std::cout << "x1 = " << solution(0) << std::endl;
-    std::cout << "x2 = " << solution(1) << std::endl;
+            for (int i = 0; i < n; ++i) {
+                xk[i] -= dx[i];
+            }
+            FkNorm = euclideanNorm(systemEquations(xk));
 
-    // Анализируем результат (например, вывод нормы функции в конечной точке)
-    double finalDiscrepancy = function.ComputeInPoint(solution).EuqlideanNorm();
-    std::cout << "Норма функции в решении: " << finalDiscrepancy << std::endl;
+            iterFile << k << "," << xk[0] << "," << xk[1] << "," << 1.0 << "," << FkNorm / F0Norm << "\n";
+        }
+        iterFile.close();
+    } else {
+        cerr << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» iterations.txt РґР»СЏ Р·Р°РїРёСЃРё.\n";
+    }
 
     return 0;
 }
